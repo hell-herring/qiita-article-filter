@@ -1,0 +1,165 @@
+:root {
+  --qm-green: #4aa802;
+  --qm-bg: #ffffff;
+  --qm-fg: #2c333a;
+  --qm-fg-sub: #56606a;
+  --qm-border: #d8dee4;
+  --qm-panel: #f4f6f7;
+  --qm-danger: #d93025;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --qm-green: #6fce35;
+    --qm-bg: #14181c;
+    --qm-fg: #dfe6ec;
+    --qm-fg-sub: #aeb8c2;
+    --qm-border: #3a434c;
+    --qm-panel: #21262c;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, system-ui, sans-serif;
+  font-size: 14px;
+  color: var(--qm-fg);
+  background: var(--qm-bg);
+}
+
+.qm-main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+h1 {
+  font-size: 20px;
+  border-bottom: 3px solid var(--qm-green);
+  padding-bottom: 8px;
+}
+
+.qm-block {
+  margin-top: 24px;
+}
+
+.qm-block h2 {
+  font-size: 16px;
+}
+
+.qm-note {
+  color: var(--qm-fg-sub);
+  font-size: 13px;
+}
+
+.qm-check,
+.qm-fieldset label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 6px 0;
+  cursor: pointer;
+}
+
+.qm-fieldset {
+  margin: 10px 0;
+  padding: 8px 12px;
+  border: 1px solid var(--qm-border);
+  border-radius: 6px;
+}
+
+.qm-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 560px) {
+  .qm-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+.qm-textarea-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 700;
+}
+
+textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--qm-border);
+  border-radius: 6px;
+  background: var(--qm-panel);
+  color: var(--qm-fg);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  font-weight: 400;
+  resize: vertical;
+}
+
+.qm-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+button,
+.qm-import {
+  appearance: none;
+  display: inline-block;
+  border: 1px solid var(--qm-green);
+  border-radius: 6px;
+  background: var(--qm-green);
+  color: #fff;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+button:hover,
+.qm-import:hover {
+  opacity: 0.85;
+}
+
+.qm-import {
+  background: transparent;
+  color: var(--qm-green);
+}
+
+.qm-import input[type="file"] {
+  display: none;
+}
+
+.qm-status {
+  color: var(--qm-green);
+}
+
+.qm-error {
+  color: var(--qm-danger);
+}
+
+:focus-visible {
+  outline: 2px solid var(--qm-green);
+  outline-offset: 2px;
+}
+
+.qm-import:focus-within {
+  outline: 2px solid var(--qm-green);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  button,
+  .qm-import {
+    transition: none;
+  }
+}

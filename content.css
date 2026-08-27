@@ -1,0 +1,149 @@
+/* Qiita Article Filter - injected styles
+   すべて qm- 接頭辞 + !important で Qiita 側のスタイルと衝突させない */
+
+/* hide モード: カードごと非表示 */
+.qm-hidden {
+  display: none !important;
+}
+
+/* collapse モード: スタブ以外の中身を隠す */
+.qm-collapsed > :not(.qm-stub) {
+  display: none !important;
+}
+
+.qm-stub {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  padding: 8px 12px !important;
+  margin: 4px 0 !important;
+  border: 1px dashed #b8c4cc !important;
+  border-radius: 6px !important;
+  background: #f4f6f7 !important;
+  color: #56606a !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+}
+
+.qm-stub-label {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.qm-stub-show {
+  flex: none !important;
+  appearance: none !important;
+  border: 1px solid #4aa802 !important;
+  border-radius: 4px !important;
+  background: transparent !important;
+  color: #4aa802 !important;
+  font-size: 12px !important;
+  padding: 3px 10px !important;
+  cursor: pointer !important;
+  transition: background-color 0.15s ease, color 0.15s ease !important;
+}
+
+.qm-stub-show:hover {
+  background: #4aa802 !important;
+  color: #fff !important;
+}
+
+/* ミュートボタン: カードにホバー / フォーカスで右上に表示 */
+.qm-card {
+  position: relative !important;
+}
+
+.qm-mute-wrap {
+  position: absolute !important;
+  top: 4px !important;
+  right: 4px !important;
+  z-index: 10 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+  gap: 4px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.15s ease !important;
+}
+
+.qm-card:hover > .qm-mute-wrap,
+.qm-mute-wrap:focus-within {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+.qm-mute-btn {
+  appearance: none !important;
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
+  border-radius: 4px !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  color: #56606a !important;
+  font-size: 11px !important;
+  line-height: 1.4 !important;
+  padding: 2px 8px !important;
+  cursor: pointer !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) !important;
+  transition: background-color 0.15s ease, color 0.15s ease !important;
+}
+
+.qm-mute-btn:hover {
+  background: #d93025 !important;
+  border-color: #d93025 !important;
+  color: #fff !important;
+}
+
+/* ミュートボタンにフォーカスが当たったら可視化 (キーボード操作対応) */
+.qm-mute-btn:focus-visible,
+.qm-stub-show:focus-visible {
+  outline: 2px solid #4aa802 !important;
+  outline-offset: 2px !important;
+  opacity: 1 !important;
+}
+
+/* ダークモード */
+@media (prefers-color-scheme: dark) {
+  .qm-stub {
+    border-color: #4b5560 !important;
+    background: #21262c !important;
+    color: #aeb8c2 !important;
+  }
+
+  .qm-stub-show {
+    border-color: #6fce35 !important;
+    color: #6fce35 !important;
+  }
+
+  .qm-stub-show:hover {
+    background: #6fce35 !important;
+    color: #14181c !important;
+  }
+
+  .qm-mute-btn {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    background: rgba(33, 38, 44, 0.95) !important;
+    color: #aeb8c2 !important;
+  }
+
+  .qm-mute-btn:hover {
+    background: #d93025 !important;
+    border-color: #d93025 !important;
+    color: #fff !important;
+  }
+
+  .qm-mute-btn:focus-visible,
+  .qm-stub-show:focus-visible {
+    outline-color: #6fce35 !important;
+  }
+}
+
+/* アニメーション抑制設定を尊重する */
+@media (prefers-reduced-motion: reduce) {
+  .qm-stub-show,
+  .qm-mute-wrap,
+  .qm-mute-btn {
+    transition: none !important;
+  }
+}

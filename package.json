@@ -1,0 +1,14 @@
+{
+  "name": "qiita-article-filter",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Qiita で特定のユーザーや Organization の記事を一覧から隠す Chrome 拡張機能",
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/content.test.mjs",
+    "icons": "node scripts/generate-icons.mjs"
+  },
+  "devDependencies": {
+    "jsdom": "^24.1.0"
+  }
+}
