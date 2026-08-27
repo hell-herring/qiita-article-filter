@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Qiita Article Filter</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="qm-header">
+    <h1>Qiita Article Filter</h1>
+    <label class="qm-switch">
+      <input type="checkbox" id="enabled">
+      <span>有効</span>
+    </label>
+  </header>
+
+  <section class="qm-section" aria-label="表示モード">
+    <h2>隠しかた</h2>
+    <div class="qm-mode" role="radiogroup" aria-label="隠しかた">
+      <label><input type="radio" name="mode" value="hide"> 完全に隠す</label>
+      <label><input type="radio" name="mode" value="collapse"> 折りたたむ</label>
+    </div>
+    <label class="qm-check">
+      <input type="checkbox" id="showMuteButton">
+      カード上にミュートボタンを表示
+    </label>
+  </section>
+
+  <section class="qm-section" id="detected-section" hidden>
+    <h2>このページから追加</h2>
+    <div id="detected-buttons" class="qm-detected"></div>
+  </section>
+
+  <section class="qm-section">
+    <h2>ミュート中のユーザー</h2>
+    <form id="user-form" class="qm-add">
+      <input type="text" id="user-input"
+             placeholder="ユーザー ID または URL"
+             aria-label="ミュートするユーザー ID または Qiita の URL">
+      <button type="submit">追加</button>
+    </form>
+    <p class="qm-error" id="user-error" hidden>ユーザー ID を読み取れませんでした</p>
+    <ul class="qm-list" id="user-list" aria-label="ミュート中のユーザー一覧"></ul>
+  </section>
+
+  <section class="qm-section">
+    <h2>ミュート中の Organization</h2>
+    <form id="org-form" class="qm-add">
+      <input type="text" id="org-input"
+             placeholder="Organization ID または URL"
+             aria-label="ミュートする Organization ID または Qiita の URL">
+      <button type="submit">追加</button>
+    </form>
+    <p class="qm-error" id="org-error" hidden>Organization ID を読み取れませんでした</p>
+    <ul class="qm-list" id="org-list" aria-label="ミュート中の Organization 一覧"></ul>
+  </section>
+
+  <footer class="qm-footer">
+    <button type="button" id="open-options">詳細設定 (一括編集・書き出し)</button>
+  </footer>
+
+  <script src="common.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
