@@ -1,65 +1,71 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
-<head>
-  <meta charset="utf-8">
-  <title>Qiita Article Filter - 設定</title>
-  <link rel="stylesheet" href="options.css">
-</head>
-<body>
-  <main class="qm-main">
-    <h1>Qiita Article Filter の設定</h1>
+  <head>
+    <meta charset="utf-8" />
+    <title>Qiita Article Filter - 設定</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main class="qm-main">
+      <h1>Qiita Article Filter の設定</h1>
 
-    <section class="qm-block">
-      <h2>基本設定</h2>
-      <label class="qm-check">
-        <input type="checkbox" id="enabled"> フィルタを有効にする
-      </label>
-      <fieldset class="qm-fieldset">
-        <legend>隠しかた</legend>
-        <label><input type="radio" name="mode" value="hide"> 完全に隠す (hide)</label>
-        <label><input type="radio" name="mode" value="collapse"> 折りたたむ (collapse)</label>
-      </fieldset>
-      <label class="qm-check">
-        <input type="checkbox" id="showMuteButton"> カード上にミュートボタンを表示する
-      </label>
-    </section>
-
-    <section class="qm-block">
-      <h2>一括編集</h2>
-      <p class="qm-note">1 行に 1 つずつ入力してください。ID のほか Qiita の URL も貼り付けられます。</p>
-      <div class="qm-columns">
-        <label class="qm-textarea-label">
-          ミュートするユーザー
-          <textarea id="users-textarea" rows="12" spellcheck="false"
-                    placeholder="example_user&#10;https://qiita.com/another_user"></textarea>
+      <section class="qm-block">
+        <h2>基本設定</h2>
+        <label class="qm-check"> <input type="checkbox" id="enabled" /> フィルタを有効にする </label>
+        <fieldset class="qm-fieldset">
+          <legend>隠しかた</legend>
+          <label><input type="radio" name="mode" value="hide" /> 完全に隠す (hide)</label>
+          <label><input type="radio" name="mode" value="collapse" /> 折りたたむ (collapse)</label>
+        </fieldset>
+        <label class="qm-check">
+          <input type="checkbox" id="showMuteButton" /> カード上にミュートボタンを表示する
         </label>
-        <label class="qm-textarea-label">
-          ミュートする Organization
-          <textarea id="orgs-textarea" rows="12" spellcheck="false"
-                    placeholder="example_org&#10;https://qiita.com/organizations/another_org"></textarea>
-        </label>
-      </div>
-      <div class="qm-actions">
-        <button type="button" id="save">保存</button>
-        <span id="status" class="qm-status" role="status"></span>
-      </div>
-    </section>
+      </section>
 
-    <section class="qm-block">
-      <h2>書き出し / 読み込み</h2>
-      <p class="qm-note">設定全体を JSON ファイルとして書き出し・読み込みできます。</p>
-      <div class="qm-actions">
-        <button type="button" id="export">JSON を書き出す</button>
-        <label class="qm-import">
-          JSON を読み込む
-          <input type="file" id="import" accept="application/json,.json">
-        </label>
-      </div>
-      <p class="qm-error" id="import-error" hidden></p>
-    </section>
-  </main>
+      <section class="qm-block">
+        <h2>一括編集</h2>
+        <p class="qm-note">1 行に 1 つずつ入力してください。ID のほか Qiita の URL も貼り付けられます。</p>
+        <div class="qm-columns">
+          <label class="qm-textarea-label">
+            ミュートするユーザー
+            <textarea
+              id="users-textarea"
+              rows="12"
+              spellcheck="false"
+              placeholder="example_user&#10;https://qiita.com/another_user"
+            ></textarea>
+          </label>
+          <label class="qm-textarea-label">
+            ミュートする Organization
+            <textarea
+              id="orgs-textarea"
+              rows="12"
+              spellcheck="false"
+              placeholder="example_org&#10;https://qiita.com/organizations/another_org"
+            ></textarea>
+          </label>
+        </div>
+        <div class="qm-actions">
+          <button type="button" id="save">保存</button>
+          <span id="status" class="qm-status" role="status"></span>
+        </div>
+      </section>
 
-  <script src="common.js"></script>
-  <script src="options.js"></script>
-</body>
+      <section class="qm-block">
+        <h2>書き出し / 読み込み</h2>
+        <p class="qm-note">設定全体を JSON ファイルとして書き出し・読み込みできます。</p>
+        <div class="qm-actions">
+          <button type="button" id="export">JSON を書き出す</button>
+          <label class="qm-import">
+            JSON を読み込む
+            <input type="file" id="import" accept="application/json,.json" />
+          </label>
+        </div>
+        <p class="qm-error" id="import-error" hidden></p>
+      </section>
+    </main>
+
+    <script src="common.js"></script>
+    <script src="options.js"></script>
+  </body>
 </html>

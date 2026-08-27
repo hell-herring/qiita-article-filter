@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Lint / Format / Test
+    runs-on: ubuntu-latest
+    steps:
+      # サードパーティ Action はタグではなくコミット SHA で固定する
+      # (タグは付け替えられるため。更新時は末尾のコメントのバージョンも合わせる)
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24.x # 現行の Active LTS
+          cache: npm
+
+      # package-lock.json どおりに再現インストール (package.json とズレていたら失敗する)
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Lint (ESLint)
+        run: npm run lint
+
+      - name: Format check (Prettier)
+        run: npm run format:check
+
+      - name: Test
+        run: npm test
+
+      # アイコンは scripts/generate-icons.mjs の出力とコミット内容が一致しているべき
+      - name: Icons are up to date
+        run: |
+          npm run icons
+          git diff --exit-code -- icons

@@ -42,7 +42,9 @@
   font-size: 12px !important;
   padding: 3px 10px !important;
   cursor: pointer !important;
-  transition: background-color 0.15s ease, color 0.15s ease !important;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease !important;
 }
 
 .qm-stub-show:hover {
@@ -86,7 +88,9 @@
   padding: 2px 8px !important;
   cursor: pointer !important;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) !important;
-  transition: background-color 0.15s ease, color 0.15s ease !important;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease !important;
 }
 
 .qm-mute-btn:hover {

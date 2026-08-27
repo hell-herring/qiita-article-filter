@@ -6,9 +6,19 @@
   "type": "module",
   "scripts": {
     "test": "node --test test/content.test.mjs",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "npm run lint && npm run format:check && npm test",
     "icons": "node scripts/generate-icons.mjs"
   },
   "devDependencies": {
-    "jsdom": "^24.1.0"
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.9.1",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.11.0",
+    "jsdom": "^24.1.0",
+    "prettier": "^3.9.6"
   }
 }

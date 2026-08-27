@@ -39,7 +39,7 @@ document.getElementById("save").addEventListener("click", () => {
       mutedUsers: parseLines(usersTextarea.value, qmExtractUserId),
       mutedOrgs: parseLines(orgsTextarea.value, qmExtractOrgId),
     },
-    () => showStatus("保存しました")
+    () => showStatus("保存しました"),
   );
 });
 

@@ -20,11 +20,11 @@ Qiita (https://qiita.com) の記事一覧から、特定のユーザーや Organ
 
 Chrome ウェブストアには公開していないため、ZIP をダウンロードして開発者モードで読み込みます。
 
-| 種類 | リンク |
-| --- | --- |
-| 最新リリース (推奨) | [qiita-article-filter-v1.0.1.zip](https://github.com/hell-herring/qiita-article-filter/archive/refs/tags/v1.0.1.zip) |
-| 開発版 (`main` の最新) | [main.zip](https://github.com/hell-herring/qiita-article-filter/archive/refs/heads/main.zip) |
-| 過去のバージョン | [リリース一覧](https://github.com/hell-herring/qiita-article-filter/releases) |
+| 種類                   | リンク                                                                                                               |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| 最新リリース (推奨)    | [qiita-article-filter-v1.0.1.zip](https://github.com/hell-herring/qiita-article-filter/archive/refs/tags/v1.0.1.zip) |
+| 開発版 (`main` の最新) | [main.zip](https://github.com/hell-herring/qiita-article-filter/archive/refs/heads/main.zip)                         |
+| 過去のバージョン       | [リリース一覧](https://github.com/hell-herring/qiita-article-filter/releases)                                        |
 
 ZIP を展開すると `qiita-article-filter-1.0.1` のようなフォルダができ、その直下に `manifest.json` があります。
 Chrome は読み込んだフォルダを参照し続けるので、**展開先は消したり移動したりしない場所** (例: `~/chrome-extensions/qiita-article-filter/`) に置いてください。
@@ -92,10 +92,20 @@ Qiita は Next.js + CSS Modules で構築されており、**クラス名がビ�
 ## 開発
 
 ```sh
-npm install   # jsdom (テスト用) を導入
-npm test      # jsdom 上で content.js を実行する結合テスト
-npm run icons # icons/ の PNG を再生成
+npm ci               # 開発用の依存 (jsdom / ESLint / Prettier) を lockfile どおりに導入
+npm run check        # lint + format チェック + テストをまとめて実行 (CI と同じ内容)
+
+npm run lint         # ESLint
+npm run lint:fix     # ESLint (自動修正)
+npm run format       # Prettier で整形
+npm run format:check # Prettier の差分チェック
+npm test             # jsdom 上で content.js を実行する結合テスト
+npm run icons        # icons/ の PNG を再生成
 ```
+
+- Linter: [ESLint](https://eslint.org/) (flat config / `eslint.config.mjs`)。拡張機能本体 (`content.js` / `common.js` / `popup.js` / `options.js`) はブラウザの古典スクリプト、`scripts/` と `test/` は Node の ESM として別々に設定しています
+- Formatter: [Prettier](https://prettier.io/) (`.prettierrc.json`)。JS / CSS / HTML / JSON / Markdown を対象にしています。フォーマット系の ESLint ルールは `eslint-config-prettier` で無効化してあるため、両者は競合しません
+- CI: GitHub Actions (`.github/workflows/ci.yml`)。`main` への push と Pull Request で、lint / format チェック / テスト / `icons/` が `npm run icons` の出力と一致するかを検証します。依存は `package-lock.json` をコミットしたうえで `npm ci` で再現インストールしています (依存を足したら lockfile も一緒にコミットすること)
 
 ## 既知の制約
 
