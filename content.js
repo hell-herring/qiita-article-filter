@@ -36,7 +36,10 @@
   const touchedCards = new Set();
 
   function normalizeId(raw) {
-    return String(raw ?? "").trim().replace(/^@+/, "").toLowerCase();
+    return String(raw ?? "")
+      .trim()
+      .replace(/^@+/, "")
+      .toLowerCase();
   }
 
   function setState(items) {

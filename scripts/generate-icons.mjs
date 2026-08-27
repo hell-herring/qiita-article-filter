@@ -75,9 +75,9 @@ function sample(x, y) {
   if (Math.hypot(x - cx, y - cy) > r) return [0, 0, 0, 0];
 
   // スピーカー本体 (矩形) + コーン (台形)
-  const inBody = x >= 0.17 && x <= 0.30 && y >= 0.38 && y <= 0.62;
+  const inBody = x >= 0.17 && x <= 0.3 && y >= 0.38 && y <= 0.62;
   let inCone = false;
-  if (x >= 0.28 && x <= 0.50) {
+  if (x >= 0.28 && x <= 0.5) {
     const t = (x - 0.28) / 0.22; // 0..1 で広がる
     const half = 0.12 + t * 0.14;
     inCone = Math.abs(y - 0.5) <= half;
@@ -86,8 +86,8 @@ function sample(x, y) {
   // ×印 (2 本の線分ストローク)
   const w = 0.055;
   const inX =
-    distToSegment(x, y, 0.60, 0.36, 0.86, 0.64) < w ||
-    distToSegment(x, y, 0.86, 0.36, 0.60, 0.64) < w;
+    distToSegment(x, y, 0.6, 0.36, 0.86, 0.64) < w ||
+    distToSegment(x, y, 0.86, 0.36, 0.6, 0.64) < w;
 
   return inBody || inCone || inX ? [...WHITE, 255] : [...GREEN, 255];
 }
@@ -97,14 +97,20 @@ function render(size) {
   const rgba = Buffer.alloc(size * size * 4);
   for (let py = 0; py < size; py++) {
     for (let px = 0; px < size; px++) {
-      let r = 0, g = 0, b = 0, a = 0;
+      let r = 0,
+        g = 0,
+        b = 0,
+        a = 0;
       for (let sy = 0; sy < SS; sy++) {
         for (let sx = 0; sx < SS; sx++) {
           const [sr, sg, sb, sa] = sample(
             (px + (sx + 0.5) / SS) / size,
-            (py + (sy + 0.5) / SS) / size
+            (py + (sy + 0.5) / SS) / size,
           );
-          r += sr * sa; g += sg * sa; b += sb * sa; a += sa;
+          r += sr * sa;
+          g += sg * sa;
+          b += sb * sa;
+          a += sa;
         }
       }
       const i = (py * size + px) * 4;

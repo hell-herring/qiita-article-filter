@@ -23,9 +23,24 @@ Qiita は Next.js + CSS Modules で、**クラス名・data 属性はビルド�
 **必ず `npm test` を実行して全件パスを確認してから完了とすること**。
 
 ```sh
-npm install  # 初回のみ (jsdom)
+npm install  # 初回のみ (jsdom / ESLint / Prettier)
 npm test
 ```
+
+## コミット前に `npm run check`
+
+`npm run check` = ESLint + Prettier の差分チェック + テスト。GitHub Actions
+(`.github/workflows/ci.yml`) が Pull Request で同じ内容を回すので、**変更を終える前に
+必ずローカルで通しておくこと**。整形の差分は `npm run format` で解消できる。
+
+- ESLint は flat config (`eslint.config.mjs`)。拡張機能本体は `sourceType: "script"` +
+  browser グローバル、`scripts/` と `test/` の `.mjs` は Node の ESM として設定している。
+  `common.js` が公開するグローバル (`QM_*` / `qm*`) は popup / options 用に
+  config 側で宣言しているので、ヘルパーを増やしたら `eslint.config.mjs` にも追加すること
+- Prettier の設定は `.prettierrc.json` (printWidth 100)。フォーマット系 ESLint ルールは
+  `eslint-config-prettier` で無効化済みなので、整形は Prettier に一本化する
+- CI は `icons/` が `npm run icons` の出力と一致することも検証する。
+  `scripts/generate-icons.mjs` を変更したら再生成してコミットすること
 
 ## その他の約束事
 

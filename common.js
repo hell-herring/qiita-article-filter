@@ -11,14 +11,38 @@ const QM_DEFAULTS = {
 
 // Qiita のユーザー ID として使えない予約パス (URL からの抽出時に除外)
 const QM_RESERVED_SEGMENTS = new Set([
-  "organizations", "items", "tags", "search", "trend", "timeline", "milestones",
-  "official-columns", "advent-calendar", "question", "questions", "drafts",
-  "private", "settings", "notifications", "login", "signup", "sessions",
-  "about", "terms", "privacy", "api", "jobs", "release-notes", "opportunities",
+  "organizations",
+  "items",
+  "tags",
+  "search",
+  "trend",
+  "timeline",
+  "milestones",
+  "official-columns",
+  "advent-calendar",
+  "question",
+  "questions",
+  "drafts",
+  "private",
+  "settings",
+  "notifications",
+  "login",
+  "signup",
+  "sessions",
+  "about",
+  "terms",
+  "privacy",
+  "api",
+  "jobs",
+  "release-notes",
+  "opportunities",
 ]);
 
 function qmNormalizeId(raw) {
-  return String(raw ?? "").trim().replace(/^@+/, "").toLowerCase();
+  return String(raw ?? "")
+    .trim()
+    .replace(/^@+/, "")
+    .toLowerCase();
 }
 
 function qmTryParseQiitaUrl(raw) {
