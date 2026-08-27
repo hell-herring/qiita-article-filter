@@ -23,7 +23,7 @@ Qiita は Next.js + CSS Modules で、**クラス名・data 属性はビルド�
 **必ず `npm test` を実行して全件パスを確認してから完了とすること**。
 
 ```sh
-npm install  # 初回のみ (jsdom / ESLint / Prettier)
+npm ci       # 初回のみ (jsdom / ESLint / Prettier)
 npm test
 ```
 
@@ -41,6 +41,8 @@ npm test
   `eslint-config-prettier` で無効化済みなので、整形は Prettier に一本化する
 - CI は `icons/` が `npm run icons` の出力と一致することも検証する。
   `scripts/generate-icons.mjs` を変更したら再生成してコミットすること
+- 依存は `package-lock.json` をコミットして CI では `npm ci` で入れている。
+  依存を追加・更新したら lockfile も必ず一緒にコミットすること (ズレると CI が落ちる)
 
 ## その他の約束事
 

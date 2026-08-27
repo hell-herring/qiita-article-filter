@@ -23,10 +23,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22.x
+          cache: npm
 
-      # package-lock.json はリポジトリに含めていないため npm ci ではなく npm install
+      # package-lock.json どおりに再現インストール (package.json とズレていたら失敗する)
       - name: Install dependencies
-        run: npm install --no-audit --no-fund
+        run: npm ci --no-audit --no-fund
 
       - name: Lint (ESLint)
         run: npm run lint
