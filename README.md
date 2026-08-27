@@ -16,13 +16,64 @@ Qiita (https://qiita.com) の記事一覧から、特定のユーザーや Organ
 - 設定は `chrome.storage.sync` に保存され、同じ Google アカウントの Chrome 間で同期されます
 - ダークモード (`prefers-color-scheme`) と `prefers-reduced-motion` に対応
 
+## ダウンロード
+
+Chrome ウェブストアには公開していないため、ZIP をダウンロードして開発者モードで読み込みます。
+
+| 種類 | リンク |
+| --- | --- |
+| 最新リリース (推奨) | [qiita-article-filter-v1.0.1.zip](https://github.com/hell-herring/qiita-article-filter/archive/refs/tags/v1.0.1.zip) |
+| 開発版 (`main` の最新) | [main.zip](https://github.com/hell-herring/qiita-article-filter/archive/refs/heads/main.zip) |
+| 過去のバージョン | [リリース一覧](https://github.com/hell-herring/qiita-article-filter/releases) |
+
+ZIP を展開すると `qiita-article-filter-1.0.1` のようなフォルダができ、その直下に `manifest.json` があります。
+Chrome は読み込んだフォルダを参照し続けるので、**展開先は消したり移動したりしない場所** (例: `~/chrome-extensions/qiita-article-filter/`) に置いてください。
+
+`git` が使える場合はクローンでも構いません (更新が `git pull` だけで済みます)。
+
+```sh
+git clone https://github.com/hell-herring/qiita-article-filter.git
+```
+
 ## インストール (開発者モード)
 
-1. このリポジトリをクローンまたは ZIP でダウンロードして展開します
+1. 上のリンクから ZIP をダウンロードして展開します (またはリポジトリをクローンします)
 2. Chrome で `chrome://extensions/` を開きます
 3. 右上の「デベロッパー モード」をオンにします
-4. 「パッケージ化されていない拡張機能を読み込む」を押し、このリポジトリのフォルダ (`manifest.json` があるフォルダ) を選択します
+4. 「パッケージ化されていない拡張機能を読み込む」を押し、展開したフォルダ (`manifest.json` があるフォルダ) を選択します
 5. https://qiita.com/ を開き、ツールバーの拡張機能アイコンからミュート対象を登録します
+
+## 更新手順
+
+開発者モードで読み込んだ拡張機能は **自動更新されません**。新しいバージョンを使うには、ファイルを差し替えてから Chrome に再読み込みさせます。
+
+### クローンした場合
+
+```sh
+cd path/to/qiita-article-filter
+git pull
+```
+
+### ZIP でインストールした場合
+
+1. [最新リリースの ZIP](https://github.com/hell-herring/qiita-article-filter/releases/latest) をダウンロードして展開します
+2. **インストール時と同じフォルダパスのまま**、中身を新しいファイルで上書きします
+   - フォルダを削除して置き直すとパスが変わりやすく、パスが変わると Chrome 上の拡張機能 ID も変わって設定が引き継がれません
+   - パスを変えたい場合や「このアイテムを読み込めませんでした」と表示された場合は、いったん拡張機能を削除して、新しいフォルダを読み込み直してください
+
+### Chrome に再読み込みさせる
+
+1. `chrome://extensions/` を開きます
+2. 「Qiita Article Filter」のカードにある再読み込みアイコン (⟳) を押します
+   - デベロッパー モードが有効なら、右上の「更新」ボタンでまとめて再読み込みすることもできます
+3. カードに表示されるバージョン番号が新しくなっていることを確認します
+4. すでに開いている qiita.com のタブには古いスクリプトが残っているため、**タブを再読み込み**します
+
+### 設定のバックアップ
+
+ミュート設定は `chrome.storage.sync` に保存され、上書き更新と再読み込みでは消えません。
+ただし拡張機能を削除して読み込み直したり、フォルダのパスを変えたりすると失われることがあるため、
+心配な場合は事前に設定ページ (拡張機能の「詳細」→「拡張機能のオプション」) の **JSON 書き出し** でバックアップしておいてください。読み込み直したあとは、同じ画面の JSON 読み込みで復元できます。
 
 ## 仕組み
 
