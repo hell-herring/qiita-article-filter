@@ -190,6 +190,71 @@ test("記事詳細ページでは関連記事だけ隠れ、本文の article �
   assert.equal(article.classList.contains("qm-collapsed"), false);
 });
 
+// 実際の Qiita に近いフィクスチャ。カードは article / li ではなく div で、
+// 1 枚のカード内に同じ記事へのリンクが複数ある (タイトル / いいね / コメント)。
+// 過去に「タイトル階層で誤ってカード確定し、タイトルしか隠れない・
+// Organization リンクがカード外扱いになる」バグがあった (回帰テスト)。
+const DIV_FEED_HTML = `<!DOCTYPE html>
+<html><body>
+<div id="__next">
+  <header><nav><a href="/">Qiita</a></nav></header>
+  <main>
+    <div class="style-t5r6e7">
+      <div id="div-feed" class="style-h8j9k0">
+        <div id="card-alice" class="style-q1w2e3">
+          <div class="style-a1s2d3">
+            <a href="/Alice">Alice</a>
+            <a href="/organizations/AcmeOrg">Acme Org</a>
+          </div>
+          <h2 id="title-alice" class="style-z9x8c7">
+            <a href="/Alice/items/0123456789abcdef0123">Alice の記事</a>
+          </h2>
+          <div class="style-f4g5h6">
+            <a href="/Alice/items/0123456789abcdef0123/likers">10</a>
+            <a href="/Alice/items/0123456789abcdef0123#comments">2</a>
+          </div>
+        </div>
+        <div id="card-bob" class="style-v3b4n5">
+          <div class="style-m6l7k8"><a href="/bob">bob</a></div>
+          <h2><a href="/bob/items/fedcba9876543210fedc">Bob の記事</a></h2>
+          <div><a href="/bob/items/fedcba9876543210fedc/likers">3</a></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</body></html>`;
+
+test("div ベースのカードでもカード全体が隠れる (タイトルだけにならない)", () => {
+  const { document } = launch(DIV_FEED_HTML, { storage: { mutedUsers: ["alice"] } });
+  assert.equal(hidden(document, "card-alice"), true);
+  assert.equal(document.getElementById("title-alice").classList.contains("qm-hidden"), false);
+  assert.equal(hidden(document, "card-bob"), false);
+  for (const selector of ["main", "#__next", "#div-feed"]) {
+    assert.equal(document.querySelector(selector).classList.contains("qm-hidden"), false);
+  }
+});
+
+test("div ベースのカードでも Organization ミュートが効く", () => {
+  const { document } = launch(DIV_FEED_HTML, { storage: { mutedOrgs: ["acmeorg"] } });
+  assert.equal(hidden(document, "card-alice"), true);
+  assert.equal(hidden(document, "card-bob"), false);
+});
+
+test("div ベースのカードにも Organization ミュートボタンが付き、押すと隠れる", () => {
+  const { document, chrome } = launch(DIV_FEED_HTML, { storage: {} });
+  const wrap = document.getElementById("card-alice").querySelector(":scope > .qm-mute-wrap");
+  assert.ok(wrap, "カード直下に qm-mute-wrap が付いている");
+  const orgBtn = wrap.querySelector(".qm-mute-btn.qm-mute-org");
+  assert.ok(orgBtn, "Organization 用ボタンがある");
+  assert.match(orgBtn.textContent, /acmeorg/);
+
+  orgBtn.click();
+  assert.equal(JSON.stringify(chrome._store.mutedOrgs), JSON.stringify(["acmeorg"]));
+  assert.equal(hidden(document, "card-alice"), true);
+  assert.equal(hidden(document, "card-bob"), false);
+});
+
 test("カードが 1 件しかなくても article / li なら検出できる", () => {
   const html = `<!DOCTYPE html>
   <html><body>

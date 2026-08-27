@@ -62,25 +62,43 @@
     return url.pathname;
   }
 
-  function articleAuthorOf(anchor) {
+  function articleMatchOf(anchor) {
     const path = pathOf(anchor);
     if (!path) return null;
     const m = ARTICLE_PATH_RE.exec(path);
     if (!m) return null;
     // 現在開いているページ自身へのリンク (記事詳細の見出し等) はカード扱いしない
     if (path.replace(/\/+$/, "") === location.pathname.replace(/\/+$/, "")) return null;
-    return normalizeId(m[1]);
+    return m;
+  }
+
+  function articleAuthorOf(anchor) {
+    const m = articleMatchOf(anchor);
+    return m ? normalizeId(m[1]) : null;
+  }
+
+  // 記事を一意に識別するキー (/{userId}/items/{itemId} 部分)。
+  // 1 枚のカードにはタイトル・いいね・コメント等、同じ記事へのリンクが
+  // 複数あるため、「リンクの有無」ではなくこのキーで記事を区別する。
+  function articleKeyOf(anchor) {
+    const m = articleMatchOf(anchor);
+    return m ? m[0].toLowerCase() : null;
   }
 
   // ---- カード検出 -------------------------------------------------------
 
-  function containsArticleLink(node) {
-    if (!node || node.nodeType !== 1) return false;
-    if (node.tagName === "A" && articleAuthorOf(node) !== null) return true;
-    for (const a of node.querySelectorAll("a[href]")) {
-      if (articleAuthorOf(a) !== null) return true;
+  function articleKeysIn(node) {
+    const keys = new Set();
+    if (!node || node.nodeType !== 1) return keys;
+    if (node.tagName === "A") {
+      const key = articleKeyOf(node);
+      if (key) keys.add(key);
     }
-    return false;
+    for (const a of node.querySelectorAll("a[href]")) {
+      const key = articleKeyOf(a);
+      if (key) keys.add(key);
+    }
+    return keys;
   }
 
   function isForbidden(el, mainEl) {
@@ -94,7 +112,10 @@
 
   // リンクから記事カード 1 件分に相当する祖先要素を探す。
   // - article / li に当たったらそこで確定
-  // - 「親の子要素のうち記事リンクを含むものが 2 つ以上」ならその階層 (el) で確定
+  // - 「親の子要素のうち、el とは別の記事へのリンクを含むものがある」なら
+  //   その階層 (el) で確定。同一カード内にはタイトル・いいね・コメント等、
+  //   同じ記事へのリンクが複数並ぶため、「記事リンクの有無」だけで数えると
+  //   カード内部 (タイトルの階層など) で誤って止まってしまう。
   // - ガード対象に到達したら諦める (null)
   function findCard(link, mainEl) {
     let el = link;
@@ -103,14 +124,19 @@
       if (el.tagName === "ARTICLE" || el.tagName === "LI") return el;
       const parent = el.parentElement;
       if (!parent) return null;
-      let siblingsWithLink = 0;
+      const ownKeys = articleKeysIn(el);
+      let atCardLevel = false;
       for (const child of parent.children) {
-        if (containsArticleLink(child)) {
-          siblingsWithLink++;
-          if (siblingsWithLink >= 2) break;
+        if (child === el) continue;
+        for (const key of articleKeysIn(child)) {
+          if (!ownKeys.has(key)) {
+            atCardLevel = true;
+            break;
+          }
         }
+        if (atCardLevel) break;
       }
-      if (siblingsWithLink >= 2) return el;
+      if (atCardLevel) return el;
       if (isForbidden(parent, mainEl)) return null;
       el = parent;
     }
@@ -154,9 +180,17 @@
   }
 
   function ensureMuteButtons(card, author, orgs) {
-    if (card.querySelector(":scope > .qm-mute-wrap")) return;
+    // Organization リンクが遅れて描画されるケースがあるので、
+    // 対象 (著者 + Organization) が変わっていたら作り直す
+    const signature = JSON.stringify([author, ...orgs]);
+    const existing = card.querySelector(":scope > .qm-mute-wrap");
+    if (existing) {
+      if (existing.dataset.qmFor === signature) return;
+      existing.remove();
+    }
     const wrap = document.createElement("div");
     wrap.className = "qm-mute-wrap";
+    wrap.dataset.qmFor = signature;
 
     const userBtn = document.createElement("button");
     userBtn.type = "button";
