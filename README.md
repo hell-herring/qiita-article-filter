@@ -20,11 +20,11 @@ Qiita (https://qiita.com) の記事一覧から、特定のユーザーや Organ
 
 Chrome ウェブストアには公開していないため、ZIP をダウンロードして開発者モードで読み込みます。
 
-| 種類 | リンク |
-| --- | --- |
-| 最新リリース (推奨) | [qiita-article-filter-v1.0.1.zip](https://github.com/hell-herring/qiita-article-filter/archive/refs/tags/v1.0.1.zip) |
-| 開発版 (`main` の最新) | [main.zip](https://github.com/hell-herring/qiita-article-filter/archive/refs/heads/main.zip) |
-| 過去のバージョン | [リリース一覧](https://github.com/hell-herring/qiita-article-filter/releases) |
+| 種類                   | リンク                                                                                                               |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| 最新リリース (推奨)    | [qiita-article-filter-v1.0.1.zip](https://github.com/hell-herring/qiita-article-filter/archive/refs/tags/v1.0.1.zip) |
+| 開発版 (`main` の最新) | [main.zip](https://github.com/hell-herring/qiita-article-filter/archive/refs/heads/main.zip)                         |
+| 過去のバージョン       | [リリース一覧](https://github.com/hell-herring/qiita-article-filter/releases)                                        |
 
 ZIP を展開すると `qiita-article-filter-1.0.1` のようなフォルダができ、その直下に `manifest.json` があります。
 Chrome は読み込んだフォルダを参照し続けるので、**展開先は消したり移動したりしない場所** (例: `~/chrome-extensions/qiita-article-filter/`) に置いてください。
